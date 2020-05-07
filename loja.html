@@ -11,21 +11,26 @@
     
 <title>LOJA</title>
 </head>
-<body onload="linkApi()">
+<body onload="carregaDados()">
     <div class="container">
     <table class="table">
-        <thead>
-            <td>
+        <thead class="thead-dark">
+            <th>
+                #
+            </th>
+            <th>
                 Nome
-            </td>
-            <td>
+            </th>
+            <th>
                 Preço
-            </td>
-            <td>
-                peso
-            </td>
+            </th>
+            <th>
+                Peso
+            </th>
         </thead>
-        <tbody id="produto"></tbody>
+        <tbody id="produto">
+            <img src="" alt="">
+        </tbody>
     </table>
 
     
@@ -38,11 +43,44 @@
         var url = "http://localhost:3000/produtos";
         httpResq.open("GET", url, false);
         httpResq.send(null);
-
         var resposta = JSON.parse(httpResq.responseText);
-        console.log(resposta);
-
-       
+        console.log(resposta); 
+        return resposta;  
         }
+
+    function carregaDados(){
+        var produto = linkApi();
+        $.each(produto, function (index, item) {
+            
+            
+
+            var linha = "<tr>";
+                linha += "<td>" +
+                    
+                    "<img src="+
+                    item.img +  
+                    "></td>";
+            linha += "<td>" + item.nome + "</td>";
+            linha += "<td>" + item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });  + "</td>";
+            linha += "<td>" + item.peso +" g"+ "</td>";
+            linha += "</tr>";
+
+            
+            $("#produto").append(linha);  
+        });
+    }
+    
 </script>
+
+<style>
+    img{
+        width:50px;
+        height:50px;
+        margin: 0 auto;
+    }
+    .table td{
+        vertical-align: middle;
+        text-transform: uppercase;
+    }
+</style>
 </html>
